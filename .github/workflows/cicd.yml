@@ -9,24 +9,24 @@ jobs:
   code:
     runs-on: ubuntu-latest
     steps:
-      - name: chechout code
-        run: echo "code clone free GitHub"
+      - name: Checkout code
+       run: echo "code clone free GitHub"
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Build Docker Container
-        run:  echo "Docker Container Build"
+       run:  echo "Docker Container Build"
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Test the container
-        run: echo "Testing the container"
+       run: echo "Testing the container"
         
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Deploying the app
-        run: echo "Docker compose deployed the app"
+       run: echo "Docker compose deployed the app"
       
 
   
