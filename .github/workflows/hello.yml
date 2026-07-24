@@ -1,31 +1,60 @@
-#This is workflow name
-name: Hello Workflow
 
-# runs on a trigger
+  name: CICD
+
 on:
-  push:
-    branches: [main]
-# these are jobs inside the workflow
-jobs:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Select the environment" 
+        required: true
+        default: "dev"
+        type: choice
+        options: 
+          - dev
+          - staging
+          - prod
 
-# this is a name of the job
-  greet:
-  # this is github runner
+jobs:
+  code:
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+
     steps:
-      - name: say hello to users
-        run: echo "Hello Dosto"
-        
-      - name: say hello to username
-        run: echo "Hello $USER"
-        
-  details:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Verify Checkout
+        run: |
+          echo "Code checked out successfully"
+          echo "Environment: ${{ github.event.inputs.environment }}"
+
+  build:
+    needs: code
     runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+
     steps:
-      - name: version of python,docker, etc
-        run: docker--version && python --version
-      
-  
+      - name: Build Docker Container
+        run: echo "Building Docker container"
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Test the Container
+        run: echo "Testing the container"
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+
+    steps:
+      - name: Deploy the App
+        run: echo "Deploying application to ${{ github.event.inputs.environment }}"
+
     
     
     
